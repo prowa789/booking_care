@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- jQuery library -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- custom css file link  -->
+    <link rel="stylesheet" th:href="@{css/style.css}">
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="fragments/fragment :: loginBar"></div>
+
+<nav th:replace="fragments/fragment :: menu"></nav>
+<section class="home" id="home">
+
+    <div class="image">
+        <img src="image/home-img.svg" alt="">
+    </div>
+
+    <div class="content">
+        <h3 style="font-size: 40px">Sức khỏe toàn diện, trọn gói yêu thương</h3>
+        <p>Booking care website là giải pháp đặt lịch khám bệnh, chăm sóc sức khỏe trực tuyến cho cả gia đình.
+            Người dùng chủ động trong việc khám chữa bệnh, được lựa chọn dịch vụ, chuyên khoa,
+            bác sĩ tại các bệnh viện và phòng khám hàng đầu Việt Nam
+            như Bệnh viện Đại học Y Dược TP.HCM, Bệnh viện Chợ Rẫy, Bệnh viện Nhi Đồng Thành Phố.</p>
+        <a href="#" class="btn"> contact us <span class="fas fa-chevron-right"></span> </a>
+    </div>
+
+    <div class="introduce"><div>
+        <p>
+            Chào mừng bạn đến với <strong>phần mềm MEDPRO - Đặt lịch khám bệnh</strong><strong>, </strong>phần mềm liên kết với
+            các bệnh viện nhằm giúp bệnh nhân có
+            thể:
+        </p>
+        <p>+ Đăng ký khám bệnh.</p>
+        <p>+ Thanh toán tiền khám.</p>
+        <p>+ Nhận phiếu khám bệnh.</p>
+        <p>+ Tạo hồ sơ bệnh nhân.</p>
+        <p>+ Quản lý hồ sơ bệnh nhân.</p>
+        <p>+ Quản lý phiếu khám bệnh.</p>
+        <p>+ Quản lý lịch hẹn tái khám, ..v..v..</p>
+        <p>
+            Hoàn toàn trực tuyến ở mọi lúc mọi nơi mà không cần phải đến bệnh viện để xếp
+            hàng và chờ đợi.
+        </p>
+        <p>
+            Thông qua phần mềm, chúng tôi luôn hy vọng đã tạo nên một phương thức giúp
+            bệnh nhân có thể tiếp cận với các dịch vụ y tế (nói chung), và dịch vụ khám
+            chữa bệnh (nói riêng) một cách dễ dàng, nhanh chóng và thuận lợi.
+        </p>
+        <p>
+            Từ đó làm tăng thêm sự hài lòng của bệnh nhân, nâng cao chất lượng dịch vụ của
+            bệnh viện, và góp phần phát triển bệnh viện ngày càng trở nên thông minh hiện
+            đại đáp ứng với sự kỳ vọng và tin tưởng của quý bệnh nhân trong và ngoài nước.
+        </p>
+        <p>Trân trọng!</p>
+    </div></div>
+
+</section>
+
+<section th:replace="fragments/fragment :: footer"></section>
+
+<script th:src="@{js/script.js}"></script>
+</body>
+
+</html>
