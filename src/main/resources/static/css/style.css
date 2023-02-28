@@ -144,22 +144,20 @@ input[type=checkbox] {
     display: flex;
     /*align-items: center;*/
     flex-wrap: wrap;
-    gap:1.5rem;
+    /*gap:1.5rem;*/
     padding-top: 10rem;
 }
 
 .home .image{
-    flex:1 1 45rem;
-}
-
-.home .image img{
-    width: 100%;
+    width: 40%;
 }
 
 .home .content{
-    flex:1 1 45rem;
+    width: 60%;
 }
-
+.home .content{
+    flex:1 1 0rem;
+}
 .home .content h3{
     font-size: 4.5rem;
     color:var(--black);
@@ -169,7 +167,7 @@ input[type=checkbox] {
 
 .home .content p{
     font-size: 1.7rem;
-    /*color:var(--light-color);*/
+    color:var(--light-color);
     line-height: 1.8;
     padding: 1rem 0;
 }
@@ -372,6 +370,11 @@ input[type=checkbox] {
     padding:1rem 4rem;
 }
 
+
+.doctors .row form .btn{
+    padding:1rem 4rem;
+}
+
 .review .box-container{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(27rem, 1fr));
@@ -497,11 +500,14 @@ input[type=checkbox] {
 }
 
 .footer .box-container{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
-    gap:2rem;
+    display: flex;
+    justify-content: space-between;
+    /*grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));*/
+    /*gap:2rem;*/
 }
-
+.footer .box-container .box{
+   padding: 30px;
+}
 .footer .box-container .box h3{
     font-size: 2.5rem;
     color:var(--black);
@@ -540,7 +546,7 @@ input[type=checkbox] {
 
 
 .introduce{
-    font-size: 20px;;
+    font-size: 30px;;
 }
 
 
