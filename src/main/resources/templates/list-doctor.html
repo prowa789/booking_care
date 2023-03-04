@@ -14,46 +14,54 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- custom css file link  -->
     <link rel="stylesheet" th:href="@{css/style.css}">
     <title>Danh sách bác sỹ</title>
 </head>
 <style>
 
-    .m-d.expand-list{
+    .m-d.expand-list {
         margin: 0;
         padding: 0;
     }
-    .m-d.expand-list > li{
+
+    .m-d.expand-list > li {
         list-style-type: none;
         padding: 15px 0;
         border-bottom: 1px solid #212121;
         position: relative;
         /*         max-width: 80%; */
     }
-    .m-d label[class^="tab"]:hover{
+
+    .m-d label[class^="tab"]:hover {
         cursor: pointer;
     }
-    .m-d input{
+
+    .m-d input {
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
     }
-    .m-d input[class^="tab"]{
+
+    .m-d input[class^="tab"] {
         width: 100%;
-        height: 40px;
+        height: 30px;
         position: absolute;
         left: 0;
         top: 0;
     }
-    .m-d input[class^="tab"]:hover{
+
+    .m-d input[class^="tab"]:hover {
         cursor: pointer;
     }
-    .m-d label[class^="tab"]{
+
+    .m-d label[class^="tab"] {
         font-weight: bold;
     }
-    .m-d .content{
+
+    .m-d .content {
         height: auto;
         max-height: 0;
         /*max-width: 300px;*/
@@ -62,89 +70,108 @@
         transform: translateY(20px);
         transition: all 180ms ease-in-out 0ms;
     }
-    .m-d li[data-md-content="100"] input[class^="tab"]:checked ~ .content{
+
+    .m-d li[data-md-content="100"] input[class^="tab"]:checked ~ .content {
         max-height: 100px;
         transition: all 150ms ease-in-out 0ms;
     }
-    .m-d li[data-md-content="200"] input[class^="tab"]:checked ~ .content{
+
+    .m-d li[data-md-content="200"] input[class^="tab"]:checked ~ .content {
         max-height: 200px;
         transition: all 200ms ease-in-out 0ms;
     }
-    .m-d li[data-md-content="300"] input[class^="tab"]:checked ~ .content{
+
+    .m-d li[data-md-content="300"] input[class^="tab"]:checked ~ .content {
         max-height: 300px;
         transition: all 250ms ease-in-out 0ms;
     }
-    .m-d li[data-md-content="400"] input[class^="tab"]:checked ~ .content{
+
+    .m-d li[data-md-content="400"] input[class^="tab"]:checked ~ .content {
         max-height: 400px;
         transition: all 250ms ease-in-out 0ms;
     }
-    .m-d li[data-md-content="500"] input[class^="tab"]:checked ~ .content{
+
+    .m-d li[data-md-content="500"] input[class^="tab"]:checked ~ .content {
         max-height: 500px;
         transition: all 250ms ease-in-out 0ms;
     }
-    .m-d li[data-md-content="600"] input[class^="tab"]:checked ~ .content{
+
+    .m-d li[data-md-content="600"] input[class^="tab"]:checked ~ .content {
         max-height: 600px;
         transition: all 250ms ease-in-out 0ms;
     }
-    .m-d li[data-md-content="700"] input[class^="tab"]:checked ~ .content{
+
+    .m-d li[data-md-content="700"] input[class^="tab"]:checked ~ .content {
         max-height: 700px;
         transition: all 300ms ease-in-out 0ms;
     }
-    .m-d li[data-md-content="800"] input[class^="tab"]:checked ~ .content{
+
+    .m-d li[data-md-content="800"] input[class^="tab"]:checked ~ .content {
         max-height: 800px;
         transition: all 300ms ease-in-out 0ms;
     }
-    .m-d li[data-md-content="900"] input[class^="tab"]:checked ~ .content{
+
+    .m-d li[data-md-content="900"] input[class^="tab"]:checked ~ .content {
         max-height: 900px;
         transition: all 300ms ease-in-out 0ms;
     }
-    .m-d li[data-md-content="1000"] input[class^="tab"]:checked ~ .content{
+
+    .m-d li[data-md-content="1000"] input[class^="tab"]:checked ~ .content {
         max-height: 1000px;
         transition: all 350ms ease-in-out 0ms;
     }
-    .m-d li[data-md-content=""] input[class^="tab"]:checked ~ .content{
+
+    .m-d li[data-md-content=""] input[class^="tab"]:checked ~ .content {
         max-height: 1000px;
         transition: all 250ms ease-in-out 0ms;
     }
-    .m-d input[class^="tab"]:checked ~ .content{
+
+    .m-d input[class^="tab"]:checked ~ .content {
         margin-bottom: 20px;
+
     }
 
-    .m-d .open-close-icon{
+    .m-d .open-close-icon {
         display: inline-block;
         position: absolute;
         right: 20px;
         transform: translatey(2px);
     }
-    .m-d .open-close-icon i{
+
+    .m-d .open-close-icon i {
         position: absolute;
         left: 0;
     }
-    .m-d .open-close-icon .fa-minus{
-        transform:rotate(-90deg);
+
+    .m-d .open-close-icon .fa-minus {
+        transform: rotate(-90deg);
         transition: transform 150ms ease-in-out 0ms;
     }
-    .m-d input[class^="tab"]:checked ~ .open-close-icon .fa-minus{
+
+    .m-d input[class^="tab"]:checked ~ .open-close-icon .fa-minus {
         transform: rotate(0deg);
         transition: transform 150ms ease-in-out 0ms;
     }
-    .m-d .open-close-icon .fa-plus{
+
+    .m-d .open-close-icon .fa-plus {
         opacity: 1;
-        transform:rotate(-90deg);
+        transform: rotate(-90deg);
         transition: opacity 50ms linear 0ms, transform 150ms ease-in-out 0ms;
     }
-    .m-d input[class^="tab"]:checked ~ .open-close-icon .fa-plus{
+
+    .m-d input[class^="tab"]:checked ~ .open-close-icon .fa-plus {
         opacity: 0;
         transform: rotate(0deg);
         transition: opacity 50ms linear 0ms, transform 150ms ease-in-out 0ms;
     }
 
-    *{
-        line-height: 1.4;
-        font-family: "harmonia sans", roboto, arial;
-    }
-    h3.bs-name {
-        font-size: 30px;
+    /** {*/
+    /*    line-height: 1.4;*/
+    /*    font-family: "harmonia sans", roboto, arial;*/
+    /*}*/
+
+    .bs-name {
+        font-size: 24px;
         color: #0061a9;
         font-weight: 500;
         margin-top: 20px;
@@ -156,13 +183,21 @@
         margin-bottom: 0px;
         margin-top: 10px;
     }
+
     .bs-tk .name {
         font-size: 21px;
         color: #0061a9;
         margin-top: 15px;
         margin-left: 55px;
     }
-    label.tab_lab.tab-title {color: #0061a9;font-weight: 500}
+
+    label.tab_lab.tab-title {
+        color: #0061a9;
+        font-weight: 500
+    }
+    .pagination{
+        font-size: 20px;
+    }
 </style>
 
 <body>
@@ -170,22 +205,38 @@
 
 <nav th:replace="fragments/fragment :: menu"></nav>
 
-<section class="doctors" id="doctors" >
+<section class="doctors" id="doctors">
+    <h1 class="heading"><span>Danh sách bác sỹ</span></h1>
+    <form action="">
+        <div class="container" style="position: relative;margin-top: 20px">
+            <img width="100%" src="https://www.hfh.com.vn/sites/default/files/block/Medical-team.jpg" alt="">
+            <h2 style="position: absolute;left: 40%;bottom: 0;font-size: 40px;color: white;background-color: #16a085;padding: 10px;text-shadow: #333333 4px 4px 4px;">
+                TÌM BÁC SỸ</h2>
+        </div>
 
-    <h1 class="heading"> <span>Danh sách bác sỹ</span> </h1>
-    <div class="container" style="position: relative;margin-top: 20px">
-        <img width="100%" src="https://www.hfh.com.vn/sites/default/files/block/Medical-team.jpg" alt="">
-        <h2 style="position: absolute;left: 40%;bottom: 0;font-size: 40px;color: white;background-color: #16a085;padding: 10px;text-shadow: #333333 4px 4px 4px;">TÌM BÁC SỸ</h2>
-    </div>
-
-    <div class="container bs-tk" style="margin-top: 20px">
-        <div class="row">
-            <div class="col-1"></div>
-            <div class="col-3">
-                <h1 class="name">Chọn chuyên khoa</h1>
+        <div class="container bs-tk" style="margin-top: 20px">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-3">
+                    <h1 class="name">Chọn chuyên khoa</h1>
+                </div>
+                <div class="col-6">
+                    <select class="form-select box" name="chuyenKhoaId"
+                            style="font-size: 20px; width: 100%;margin: 0.7rem 0;border-radius: 0.5rem;border: var(--border);font-size: 1.6rem;color: var(--black);text-transform: none;padding: 1rem;">
+                        <option selected value="0">--Tất cả--</option>
+                        <option th:each="chuyenKhoa : ${chuyenKhoaList}" th:value="${chuyenKhoa.id}"
+                                th:selected="${ckId} == ${chuyenKhoa.id}"
+                                th:text="${chuyenKhoa.ten}"></option>
+                    </select>
+                </div>
             </div>
-            <div class="col-6">
-                <select class="form-select box"  name="chuyenKhoaId" style="font-size: 20px; width: 100%;
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-3">
+                    <h1 class="name">Chọn bác sỹ</h1>
+                </div>
+                <div class="col-6">
+                    <input name="bsName" type="text" th:value="${bsName}" class="box" style="font-size: 20px; width: 100%;
     margin: 0.7rem 0;
     border-radius: 0.5rem;
     border: var(--border);
@@ -193,82 +244,71 @@
     color: var(--black);
     text-transform: none;
     padding: 1rem;">
-                    <option selected value="0">--Tất cả--</option>
-                    <option selected value="1">Khoa gây mê hồi sức</option>
-                </select>
+                </div>
+            </div>
+            <div class="row" style="justify-content: center">
+                <input type="submit" class="btn box" value="Tìm bác sỹ" style="font-weight: 500">
             </div>
         </div>
-        <div class="row">
-            <div class="col-1"></div>
-            <div class="col-3">
-                <h1 class="name">Chọn bác sỹ</h1>
-            </div>
-            <div class="col-6">
-                <input name="bsName" type="text" class="box"  style="font-size: 20px; width: 100%;
-    margin: 0.7rem 0;
-    border-radius: 0.5rem;
-    border: var(--border);
-    font-size: 1.6rem;
-    color: var(--black);
-    text-transform: none;
-    padding: 1rem;">
-            </div>
-            <div class="row" style="text-align: center">
-                <a href="" class="btn">Tìm bác sỹ</a>
-            </div>
-        </div>
-    </div>
+    </form>
 
-
-
-
-    <div class="container" style="background-color: #f3f3f3;padding: 20px;margin-top: 30px">
-        <div class="row">
+    <div th:if="${bacSyList.size() >0}" class="container"
+         style="background-color: #f3f3f3;padding: 20px;margin-top: 30px">
+        <div class="row" th:each="bacSy : ${bacSyList}" style="padding-top: 20px">
             <div class="col-4">
-                <img src="https://www.hfh.com.vn/sites/default/files/styles/doctor360x500/public/profile/Dr.%20Ph%C3%AD%20Th%E1%BB%8B%20Ho%C3%A0ng%20Y%E1%BA%BFn.jpg?itok=OWCiivrI" alt="">
-
+                <img style="width: 100%;height: auto" id="output"
+                     th:src="@{${bacSy.getPhotosImagePath()}}"/>
             </div>
-            <div class="col-8" style="font-size: 20px">
-                <h3 class="bs-name">Bác sĩ Phí Thị Hoàng Yến</h3>
+            <div class="col-8" style="font-size: 16px">
+                <h2 class="bs-name"><span th:text="${bacSy.chucVu}"></span> <span th:text="${bacSy.hoTen}"></span></h2>
                 <p class="ck-title">Chuyên Khoa</p>
-                <p class="ck-name">Khoa Gây Mê Hồi Sức</p>
+                <p class="ck-name">Khoa <span th:text="${bacSy.chuyenKhoa.ten}"></span></p>
                 <p class="ck-title">Ngôn ngữ</p>
                 <p class="ck-name">Tiếng Việt, Tiếng Anh</p>
                 <ul class="m-d expand-list">
-                    <li data-md-content="200">
-                        <label name="tab" for="tab1" tabindex="-1" class="tab_lab tab-title" role="tab">Chứng chỉ</label>
-                        <input type="checkbox" checked class="tab" id="tab1" tabindex="0" />
+                    <li data-md-content="1000">
+                        <label name="tab" for="tab1" tabindex="-1" class="tab_lab tab-title" role="tab">Chứng
+                            chỉ</label>
+                        <input type="checkbox" class="tab" id="tab1" tabindex="0"/>
                         <span class="open-close-icon">
-			<i class="fas fa-plus"></i>
-			<i class="fas fa-minus"></i>
-		</span>
-                        <div class="content">
-                            Welcome to Brackets, a modern open-source code editor that understands web design. It's a lightweight,
-                            yet powerful, code editor that blends visual tools into the editor so you get the right amount of help
+                        <i class="fas fa-plus"></i>
+                        <i class="fas fa-minus"></i>
+		                </span>
+                        <div class="content" th:utext="${bacSy.chungChi}">
+                            Welcome to Brackets, a modern open-source code editor that understands web design. It's a
+                            lightweight,
+                            yet powerful, code editor that blends visual tools into the editor so you get the right
+                            amount of help
                             when you want it.
                         </div>
                     </li>
-                    <li data-md-content="300">
-                        <label name="tab" for="tab2" tabindex="-1" class="tab_lab tab-title" role="tab">Lĩnh vực chuyên sâu</label>
-                        <input type="checkbox" class="tab" id="tab2" tabindex="0" />
+                    <li data-md-content="1000">
+                        <label name="tab" for="tab2" tabindex="-1" class="tab_lab tab-title" role="tab">Lĩnh vực chuyên
+                            sâu</label>
+                        <input type="checkbox" class="tab" id="tab2" tabindex="0"/>
                         <span class="open-close-icon"><i class="fas fa-plus"></i><i class="fas fa-minus"></i></span>
-                        <div class="content">
+                        <div class="content" th:utext="${bacSy.linhVucChuyenSau}">
                             <em>Brackets is a different type of editor.</em>
-                            Brackets has some unique features like Quick Edit, Live Preview and others that you may not find in other
-                            editors. Brackets is written in JavaScript, HTML and CSS. That means that most of you using Brackets
-                            have the skills necessary to modify and extend the editor. In fact, we use Brackets every day to build
+                            Brackets has some unique features like Quick Edit, Live Preview and others that you may not
+                            find in other
+                            editors. Brackets is written in JavaScript, HTML and CSS. That means that most of you using
+                            Brackets
+                            have the skills necessary to modify and extend the editor. In fact, we use Brackets every
+                            day to build
                             Brackets. To learn more about how to use the key features, read on.
                         </div>
                     </li>
-                    <li data-md-content="600">
-                        <label name="tab" for="tab3" tabindex="-1" class="tab_lab tab-title" role="tab">Kinh nghiệm</label>
-                        <input type="checkbox" class="tab" id="tab3" tabindex="0" />
+                    <li data-md-content="1000">
+                        <label name="tab" for="tab3" tabindex="-1" class="tab_lab tab-title" role="tab">Kinh
+                            nghiệm</label>
+                        <input type="checkbox" class="tab" id="tab3" tabindex="0"/>
                         <span class="open-close-icon"><i class="fas fa-plus"></i><i class="fas fa-minus"></i></span>
-                        <div class="content">
-                            <h3>Projects in Brackets</h3>
+                        <div class="content" th:utext="${bacSy.kinhNghiem}">
                             <p>
-                                In order to edit your own code using Brackets, you can just open the folder containing your files.
-                                Brackets treats the currently open folder as a "project"; features like Code Hints, Live Preview and
+                                In order to edit your own code using Brackets, you can just open the folder containing
+                                your files.
+                                Brackets treats the currently open folder as a "project"; features like Code Hints, Live
+                                Preview and
                                 Quick Edit only use files within the currently open folder.
                             </p>
                         </div>
@@ -279,34 +319,31 @@
             </div>
         </div>
     </div>
-    <!--    <div class="box-container container-fluid">-->
-<!--        <div class="row">-->
-<!--            <a style="text-decoration: none" th:href="@{'/bac-sy/' + ${bacSy.id}}" class="col-md-3 col-xs-6 col-12" th:each="bacSy : ${bacSyList}">-->
-<!--                <div class="box" style="text-align: center">-->
-<!--                    <img  style="width: 200px;object-fit: cover;    " th:src="*{bacSy.getPhotosImagePath()}" alt="">-->
-<!--                    <h3 th:text="*{bacSy.hoTen}"></h3>-->
-<!--                    <p style="font-size: 20px;color: #39ac31;" th:text="${#dates.format(bacSy.ngaySinh, 'dd-MM-yyyy')}"></p>-->
-<!--                    <div>-->
-<!--                        <span style="font-size: 20px;color: #868e96">Chuyên khoa : </span>  <span style="font-size: 20px;" th:text="*{bacSy.chuyenKhoa.ten}"></span>-->
-<!--                    </div>-->
-<!--                    <div>-->
-<!--                        <span style="font-size: 20px;color: #39ac31">Chức vụ : </span>  <span style="font-size: 20px;" th:text="*{bacSy.chucVu}"></span>-->
-<!--                    </div>-->
+    <p style="text-align: center;font-size: 20px;padding-top: 20px" th:unless="${bacSyList.size() > 0}">Không tìm thấy
+        bác sỹ nào ở chuyên khoa này</p>
 
-<!--                </div>-->
-
-<!--            </a>-->
-<!--        </div>-->
-
-<!--    </div>-->
+    <nav style="display:flex;justify-content: center;margin-top: 20px">
+        <ul class="pagination" th:if="${bacSyPage.totalPages > 0}">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li th:if="${issearch}==true" th:each="pageNumber : ${pageNumbers}" th:class="${pageNumber==bacSyPage.number + 1} ? 'active page-item'" >
+                <a class="page-link" th:href="@{'/danh-sach-bac-sy?'+${query}+'&page='+${pageNumber}}" th:text="${pageNumber}"></a>
+            </li>
+            <li th:if="${issearch}==false" th:each="pageNumber : ${pageNumbers}" th:class="${pageNumber==bacSyPage.number + 1} ? 'active page-item'" >
+                <a class="page-link" th:href="@{/danh-sach-bac-sy(page=${pageNumber})}" th:text="${pageNumber}"></a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
 
 </section>
-
 
 <section th:replace="fragments/fragment :: footer"></section>
 
 <script th:src="@{js/script.js}"></script>
-
 
 
 </body>

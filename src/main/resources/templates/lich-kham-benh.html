@@ -18,7 +18,7 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- custom css file link  -->
     <link rel="stylesheet" th:href="@{css/style.css}">
-    <title>Title</title>
+    <title>Danh sách lịch khám</title>
 </head>
 <style>
     input {
@@ -56,6 +56,7 @@
 <section class="blogs" style="font-size: 16px;">
     <h1 class="heading"><span>Danh sách lịch khám</span></h1>
     <p class="alert alert-danger validationError" th:if="${ok}" th:text="${ok}" role="alert"></p>
+
     <nav class="navecation" style="margin-bottom: 60px">
         <ul id="navi">
             <li><a class="menu status0" href="/lich-kham-benh?status=0">Chưa xử lý</a></li>
@@ -64,6 +65,7 @@
             <li><a class="menu status3" href="/lich-kham-benh?status=3">Đã khám</a></li>
         </ul>
     </nav>
+    <p class="alert alert-danger" th:if="${lichKhamList.size() == 0}">Danh sách trống</p>
     <div class="container" th:each="lichKham : ${lichKhamList}">
         <form th:action="@{/thanhToan}" method="post">
         <h3 style="font-size: 25px!important;display: inline-block"
@@ -181,18 +183,19 @@
 
 <script>
     $(document).ready(function () {
-        var pageURL = $(location).attr("href");
-        if (pageURL === "http://localhost:8085/lich-kham-benh?status=0") {
+        var pageURL = $(location).attr("pathname") + $(location).attr("search");
+        console.log(pageURL)
+        if (pageURL === "/lich-kham-benh?status=0") {
             $('li a').removeClass("active");
             $('.status0').addClass("active");
-        } else if (pageURL === "http://localhost:8085/lich-kham-benh?status=1") {
+        } else if (pageURL === "/lich-kham-benh?status=1") {
             $('li a').removeClass("active");
             $('.status1').addClass("active");
         }
-        if (pageURL === "http://localhost:8085/lich-kham-benh?status=2") {
+        if (pageURL === "/lich-kham-benh?status=2") {
             $('li a').removeClass("active");
             $('.status2').addClass("active");
-        } else if (pageURL === "http://localhost:8085/lich-kham-benh?status=3") {
+        } else if (pageURL === "/lich-kham-benh?status=3") {
             $('li a').removeClass("active");
             $('.status3').addClass("active");
         }

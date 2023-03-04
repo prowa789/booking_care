@@ -9,16 +9,32 @@
     --border:.2rem solid var(--green);
 }
 
+.carousel-indicators li {
+    background-color: #00000040;
+    height: 5px;
+    width: 40px;
+}
+.carousel-indicators .active {
+    background-color: black;
+}
+.loginBar{
+    /*background-color: #0063aa;*/
+    /*width: 100%;*/
+}
 *{
     font-family: 'Roboto', sans-serif;
+    /*box-sizing: border-box;*/
+}
+p,h3,h1,h2,h3,span{
+    font-family: 'Roboto', sans-serif !important;
     /*box-sizing: border-box;*/
 }
 
 html{
     font-size: 10px;
-    /*overflow-x: hidden;*/
-    /*scroll-padding-top: 7rem;*/
-    /*scroll-behavior: smooth;*/
+    overflow-x: hidden;
+    scroll-padding-top: 7rem;
+    scroll-behavior: smooth;
 }
 
 section{
@@ -145,7 +161,7 @@ input[type=checkbox] {
     /*align-items: center;*/
     flex-wrap: wrap;
     /*gap:1.5rem;*/
-    padding-top: 10rem;
+    /*padding-top: 10rem;*/
 }
 
 .home .image{
@@ -502,23 +518,27 @@ input[type=checkbox] {
 .footer .box-container{
     display: flex;
     justify-content: space-between;
+    /*align-items: center;*/
     /*grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));*/
     /*gap:2rem;*/
 }
 .footer .box-container .box{
-   padding: 30px;
+   padding: 0px 20px;
+    padding-bottom: 20px;
 }
-.footer .box-container .box h3{
-    font-size: 2.5rem;
+.footer .box-container .box h2{
+    font-size: 2.3rem;
     color:var(--black);
     padding: 1rem 0;
+    font-weight: 500;
 }
 
 .footer .box-container .box a{
     display: block;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     color:var(--light-color);
     padding: 1rem 0;
+    text-decoration: none;
 }
 
 .footer .box-container .box a i{

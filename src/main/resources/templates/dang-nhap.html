@@ -29,8 +29,8 @@
 
     <h1 class="heading"> <span>Đăng</span> nhập </h1>
     <div class="row">
-        <div class="col-4"></div>
-        <div class="col-4">
+        <div class="col-md-4 d-xs-none"></div>
+        <div class="col-md-4 col-12">
             <div th:if="${param.error}" class="alert alert-primary" style="font-size: 16px;color: red" role="alert">
                 Không thể đăng nhập. Vui lòng kiểm tra tài khoản và mật khẩu của bạn.
             </div>
@@ -55,7 +55,7 @@
                     <a href="#" class="twitter btn1">
                         <i class="fa fa-twitter fa-fw"></i> Login with Twitter
                     </a>
-                    <a href="oauth2/authorization/google" class="google btn1">
+                    <a href="/oauth2/authorization/google" class="google btn1">
                         <i class="fa fa-google fa-fw"></i> Login with Google+
                     </a>
                 </div>
@@ -63,7 +63,7 @@
             </form>
         </div>
 
-        <div class="col-4"></div>
+        <div class="col-4 d-xs-none"></div>
     </div>
 
 </section>

@@ -334,18 +334,7 @@ public class BenhNhanController {
         return "doimatkhau-benh-nhan";
     }
 
-    @GetMapping("/danh-sach-bac-sy")
-    public String getAllBacSy(Model model){
-        List<BacSy> bacSyList = bacSyRepo.findAll();
-        model.addAttribute("bacSyList", bacSyList);
-        return "list-doctor";
-    }
-    @GetMapping("/bac-sy/{id}")
-    public String getBacSy(@PathVariable Integer id ,Model model){
-        BacSy bacSy = bacSyRepo.findById(id).get();
-        model.addAttribute("bacSy", bacSy);
-        return "detail-doctor";
-    }
+
     @PostMapping("/thanhToan")
     public String thanhToanMoMo(HttpServletRequest request,
                                 @RequestParam("payment_method") String paymentMethod,

@@ -24,6 +24,9 @@ public class BacSy {
     private ChuyenKhoa chuyenKhoa;
     private String noiKham;
     private String photo;
+    private String chungChi;
+    private String kinhNghiem;
+    private String linhVucChuyenSau;
 
     @Transient
     public String getPhotosImagePath() {

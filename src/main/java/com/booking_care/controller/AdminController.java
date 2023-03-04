@@ -199,7 +199,8 @@ public class AdminController {
             if(file.isEmpty()) {
                 bacSyRepo.updateThongTinBacSy(format.parse(bacSyRequest.getNgaySinh()),bacSyRequest.getHoTen(),
                         bacSyRequest.getChucVu(),bacSyRequest.getChuyenKhoaId(),bacSyRequest.getGioiThieu(),
-                        bacSyRequest.getSdt(),bacSyRequest.getEmail(),bacSyRequest.getId());
+                        bacSyRequest.getSdt(),bacSyRequest.getEmail(),bacSyRequest.getChungChi(),bacSyRequest.getKinhNghiem(),
+                        bacSyRequest.getLinhVucChuyenSau(),bacSyRequest.getId());
                 redirectAttributes.addFlashAttribute("ok","Update thành công");
                 return "redirect:/admin/bacsy/" + id;
             }
@@ -207,7 +208,8 @@ public class AdminController {
 
             bacSyRepo.updateThongTinBacSyAndUploadFile(format.parse(bacSyRequest.getNgaySinh()),bacSyRequest.getHoTen(),
                     bacSyRequest.getChucVu(),bacSyRequest.getChuyenKhoaId(),bacSyRequest.getGioiThieu(),
-                    bacSyRequest.getSdt(),bacSyRequest.getEmail(), fileName ,bacSyRequest.getId());
+                    bacSyRequest.getSdt(),bacSyRequest.getEmail(), fileName ,bacSyRequest.getChungChi(),
+                    bacSyRequest.getKinhNghiem(),bacSyRequest.getLinhVucChuyenSau(),bacSyRequest.getId());
             String uploadDir = "bacsy-photos/" + id;
 
             FileUploadUtil.saveFile(uploadDir, fileName, file);

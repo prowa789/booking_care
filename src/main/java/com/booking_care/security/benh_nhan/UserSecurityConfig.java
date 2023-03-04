@@ -84,6 +84,7 @@ public class UserSecurityConfig extends WebSecurityConfigurerAdapter{
                 .and()
                 .oauth2Login()
                 .loginPage("/dang-nhap")
+                .failureUrl("/login")
                 .userInfoEndpoint()
                 .userService(oauthUserService)
                 .and()
