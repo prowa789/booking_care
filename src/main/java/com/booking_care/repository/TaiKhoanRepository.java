@@ -15,4 +15,5 @@ public interface TaiKhoanRepository extends CrudRepository<TaiKhoan,Integer> {
     @Modifying
     @Query("update TaiKhoan t set t.password = ?1 where t.username = ?2")
     void updateMatKhau(String password, String username);
+    long countByUsername(String username);
 }

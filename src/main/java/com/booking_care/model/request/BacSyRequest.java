@@ -20,5 +20,7 @@ public class BacSyRequest {
     private String chungChi;
     private String kinhNghiem;
     private String linhVucChuyenSau;
+    private Integer tienKham;
+    private String noiKham;
 
 }

@@ -12,7 +12,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DateUtils {
+public class Utils {
 
     public static String dateToString(Date date){
         return null;
@@ -51,5 +51,19 @@ public class DateUtils {
         }
 
         return null;
+    }
+
+    public static String createUserName(String username) {
+        String output = "";
+
+        String[] splitName = username.toLowerCase().split(" ");
+
+        output = splitName[splitName.length - 1] + ".";
+
+        for (int i = 0; i < splitName.length - 1; i++) {
+            output += splitName[i].charAt(0);
+        }
+
+        return output;
     }
 }

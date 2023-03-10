@@ -56,8 +56,9 @@
 
                         <div class="col-md-6 col-12">
                             <label>Photos: </label>
-                            <input style="display: block" type="file" name="image" accept="image/png, image/jpeg" />
-                            <img style="width: 300px;height: auto"  th:src="@{${baiDang.photosImagePath}}" />
+                            <input style="display: block" type="file" name="image" accept="image/png, image/jpeg"
+                                   onchange="loadFile(event)"/>
+                            <img style="width: 300px;height: auto" id="output" th:src="@{${baiDang.photosImagePath}}" />
                         </div>
 
                         <div class="col-md-6 col-12">
@@ -116,6 +117,17 @@
         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
     });
+</script>
+
+<script>
+    var loadFile = function(event) {
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('output');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    };
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="

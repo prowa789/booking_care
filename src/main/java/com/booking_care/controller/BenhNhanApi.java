@@ -32,26 +32,26 @@ public class BenhNhanApi {
                                              @RequestParam(value = "page", required = true, defaultValue = "1") Integer page,
                                              @RequestParam(value = "pageSize", required = true, defaultValue = "10") Integer pageSize,
                                              @RequestParam(value = "status", required = false) Integer status) {
-        if(taiKhoan==null || !taiKhoan.hasRole("BENH_NHAN")) {
+        if (taiKhoan == null || !taiKhoan.hasRole("BENH_NHAN")) {
             return null;
         }
         BenhNhan benhNhan = benhNhanRepo.findByTaiKhoan(taiKhoan.getTaiKhoan());
         List<LichKham> lichKhamList = null;
-        if(status!=null) {
-            if(status == 0) {
-                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId() , Status.CHO_XU_LY, PageRequest.of(page-1,pageSize));
+        if (status != null) {
+            if (status == 0) {
+                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId(), Status.CHO_XU_LY, PageRequest.of(page - 1, pageSize));
             }
-            if(status==1){
-                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId() ,Status.DA_XAC_NHAN, PageRequest.of(page-1,pageSize));
+            if (status == 1) {
+                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId(), Status.DA_XAC_NHAN, PageRequest.of(page - 1, pageSize));
             }
-            if(status==2){
-                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId() ,Status.DA_HUY, PageRequest.of(page-1,pageSize));
+            if (status == 2) {
+                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId(), Status.DA_HUY, PageRequest.of(page - 1, pageSize));
             }
-            if(status==3){
-                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId() ,Status.DA_KHAM, PageRequest.of(page-1,pageSize));
+            if (status == 3) {
+                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId(), Status.DA_KHAM, PageRequest.of(page - 1, pageSize));
             }
-        }else {
-            lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhan(benhNhan.getId(), PageRequest.of(page-1,pageSize));
+        } else {
+            lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhan(benhNhan.getId(), PageRequest.of(page - 1, pageSize));
 
         }
 

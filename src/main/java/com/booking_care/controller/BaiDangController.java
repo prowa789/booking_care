@@ -6,7 +6,6 @@ import com.booking_care.repository.BaiDangRepository;
 import com.booking_care.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +23,9 @@ public class BaiDangController {
     BaiDangRepository baiDangRepo;
 
     @ModelAttribute
-    TaiKhoan taiKhoan(){
+    TaiKhoan taiKhoan() {
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(user instanceof CustomUserDetails && ((CustomUserDetails) user).hasRole("BENH_NHAN") ){
+        if (user instanceof CustomUserDetails && ((CustomUserDetails) user).hasRole("BENH_NHAN")) {
             CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             return userDetails.getTaiKhoan();
         }
@@ -40,6 +39,7 @@ public class BaiDangController {
 //        System.out.println(baiDangList);
         return "blog";
     }
+
     @GetMapping("{id}")
     public String getBaiDang(@PathVariable Integer id, Model model) {
         BaiDang baiDang = baiDangRepo.findById(id).get();

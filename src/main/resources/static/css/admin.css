@@ -489,3 +489,6 @@ footer.sticky-footer {
         width: calc(100% - 55px);
     }
 }
+label {
+    font-weight: 500;
+}

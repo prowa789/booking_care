@@ -73,6 +73,7 @@
 <script>
   $('.chuyenkhoa').on('change', function() {
     let id = $(this).find(":selected").val()
+    var baseUrl = "http://103.175.147.6:8085/"
     if(!isNumeric(id)) {
       alert("Chưa chọn chuyên khoa");
       return;
@@ -82,7 +83,7 @@
     $.ajax({
       type: "GET",
       dataType: "json",
-      url: "http://localhost:8085/getAllBacSy/chuyenKhoa/" + id,
+      url: baseUrl + "getAllBacSy/chuyenKhoa/" + id,
       success: function(data){
         console.log(data)
         if(data.length==0) {
@@ -111,7 +112,7 @@
       $.ajax({
         type: "GET",
         dataType: "json",
-        url: "http://localhost:8085/api/bacsy/" + id,
+        url: baseUrl + "api/bacsy/" + id,
         success: function(data){
           console.log(data.tienKham)
           $('#tienKham1').val(data.tienKham.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}))

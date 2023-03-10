@@ -57,9 +57,9 @@ public class BacSyController {
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     @ModelAttribute
-    TaiKhoan taiKhoan(){
+    TaiKhoan taiKhoan() {
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(user instanceof CustomUserDetails && ((CustomUserDetails) user).hasRole("BENH_NHAN") ){
+        if (user instanceof CustomUserDetails && ((CustomUserDetails) user).hasRole("BENH_NHAN")) {
             CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             return userDetails.getTaiKhoan();
         }
@@ -73,22 +73,24 @@ public class BacSyController {
                               HttpServletRequest request) {
         Page<BacSy> bacSyPage = null;
         String query = request.getQueryString();
-        if((query != null && query.length() >6) ){
-            if(query.contains("page")){
-                query = query.substring(query.length()-7);
+        if ((query != null && query.length() > 6)) {
+            if (query.contains("page")) {
+                query = query.substring(query.length() - 7);
             }
 
-            model.addAttribute("query",query);
-            model.addAttribute("issearch",true);
-        }
-        else{
-            model.addAttribute("issearch",false);
+            model.addAttribute("query", query);
+            model.addAttribute("issearch", true);
+        } else {
+            model.addAttribute("issearch", false);
         }
 
-        if ((bsName == null && ckId == null) || (ckId != null && ckId == 0)) {
+        if ((bsName == null && ckId == null)) {
             bacSyPage = bacSyRepo.findAll(PageRequest.of(page - 1, pageSize));
-        }
-        if (ckId != null && ckId > 0) {
+        } else if (ckId != null && ckId == 0) {
+            model.addAttribute("ckId", ckId);
+            model.addAttribute("bsName", bsName);
+            bacSyPage = bacSyRepo.getAllByName(bsName, PageRequest.of(page - 1, pageSize));
+        } else if (ckId != null && ckId > 0) {
             bacSyPage = bacSyRepo.getAllByChuyenKhoaAndName(ckId, bsName, PageRequest.of(page - 1, pageSize));
             model.addAttribute("ckId", ckId);
             model.addAttribute("bsName", bsName);
@@ -223,27 +225,22 @@ public class BacSyController {
             return "bacsy/profile";
         }
         try {
-//            System.out.println("<< " + file.getName());
-//            System.out.println("<< " + bacSyRequest.toString());
-
             BacSy bacSy = bacSyRepo.findByTaiKhoan(taiKhoan.getTaiKhoan());
-
-//            System.out.println("bacsy request post: " + bacSyRequest.getNgaySinh());
 
             if (file.isEmpty()) {
                 bacSyRepo.updateThongTinBacSy(format.parse(bacSyRequest.getNgaySinh()), bacSyRequest.getHoTen(),
-                        bacSyRequest.getChucVu(), bacSyRequest.getChuyenKhoaId(), bacSyRequest.getGioiThieu(),
+                        bacSyRequest.getChucVu(), bacSyRequest.getChuyenKhoaId(),
                         bacSyRequest.getSdt(), bacSyRequest.getEmail(), bacSyRequest.getChungChi(), bacSyRequest.getKinhNghiem(),
-                        bacSyRequest.getLinhVucChuyenSau(), bacSyRequest.getId());
+                        bacSyRequest.getLinhVucChuyenSau(),bacSyRequest.getTienKham(),bacSyRequest.getNoiKham(), bacSyRequest.getId());
                 redirectAttributes.addFlashAttribute("ok", "Update thành công");
                 return "redirect:/bacsy/profile";
             }
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
             bacSyRepo.updateThongTinBacSyAndUploadFile(format.parse(bacSyRequest.getNgaySinh()), bacSyRequest.getHoTen(),
-                    bacSyRequest.getChucVu(), bacSyRequest.getChuyenKhoaId(), bacSyRequest.getGioiThieu(),
+                    bacSyRequest.getChucVu(), bacSyRequest.getChuyenKhoaId(),
                     bacSyRequest.getSdt(), bacSyRequest.getEmail(), fileName, bacSyRequest.getChungChi(),
-                    bacSyRequest.getKinhNghiem(), bacSyRequest.getLinhVucChuyenSau(), bacSyRequest.getId());
+                    bacSyRequest.getKinhNghiem(), bacSyRequest.getLinhVucChuyenSau(),bacSyRequest.getTienKham(),bacSyRequest.getNoiKham(), bacSyRequest.getId());
             String uploadDir = "bacsy-photos/" + bacSy.getId();
 
             FileUploadUtil.saveFile(uploadDir, fileName, file);

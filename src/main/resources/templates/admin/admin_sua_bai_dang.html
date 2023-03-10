@@ -48,7 +48,8 @@
                         </div>
                        <div class="col-md-6 col-12">
                            <label>Photos: </label>
-                           <input style="display: block" type="file" name="image" accept="image/png, image/jpeg" />
+                           <input style="display: block" type="file" name="image" accept="image/png, image/jpeg"
+                                  onchange="loadFile(event)"/>
                            <img style="width: 300px;height: auto"  th:src="@{${baiDang.getPhotosImagePath()}}" />
                            <p class="validationError"
                              th:if="${errors}" th:text="${errors.get('err2')}" >CC Num Error</p>

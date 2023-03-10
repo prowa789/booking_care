@@ -1,6 +1,6 @@
 package com.booking_care.model.request;
 
-import com.booking_care.utils.DateUtils;
+import com.booking_care.utils.Utils;
 import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
 import java.util.Date;
@@ -15,7 +15,7 @@ public class BookingRequest {
     private String tienKham;
 
     public boolean isValid() {
-        Date ngayKham = DateUtils.stringToDate2(this.ngayKham);
+        Date ngayKham = Utils.stringToDate2(this.ngayKham);
         if(this.chuyenKhoaId == 0 || this.khungGioKham == null
                 || this.bacSyId == 0 || Strings.isBlank(this.moTaTrieuChung)
                 || Strings.isBlank(this.ngayKham)

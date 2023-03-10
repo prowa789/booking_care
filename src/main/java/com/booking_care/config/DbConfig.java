@@ -12,6 +12,11 @@ import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class DbConfig {
+    /*
+    * Tạo bean có điều kiện
+    *  Dùng @ConditionalOnProperty khi bạn muốn quyết định sự tồn tại Bean thông qua cấu hình property.
+    * */
+
     @Bean({"dsConfig"})
     @ConditionalOnProperty(prefix = "spring", name = {"datasource.jdbc-url"})
     @ConfigurationProperties("spring.datasource")

@@ -3,23 +3,23 @@ package com.booking_care.controller;
 import com.booking_care.config.VNPayConfig;
 import com.booking_care.constant.Constants;
 import com.booking_care.constant.ewewwewe.Status;
-import com.booking_care.model.*;
-import com.booking_care.model.request.*;
+import com.booking_care.model.BenhNhan;
+import com.booking_care.model.ChuyenKhoa;
+import com.booking_care.model.LichKham;
+import com.booking_care.model.TaiKhoan;
+import com.booking_care.model.request.BenhNhanRequest;
+import com.booking_care.model.request.BookingRequest;
+import com.booking_care.model.request.DoiMatKhauRequest;
+import com.booking_care.model.request.SignUpRequest;
 import com.booking_care.repository.*;
 import com.booking_care.security.CustomUserDetails;
-
-import com.booking_care.utils.DateUtils;
 import com.booking_care.utils.FileUploadUtil;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -27,7 +27,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -36,16 +40,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/")
@@ -73,36 +67,36 @@ public class BenhNhanController {
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-    @GetMapping(value = {"","trang-chu"})
+    @GetMapping(value = {"", "trang-chu"})
     public String home(Model model, @AuthenticationPrincipal CustomUserDetails taiKhoan) {
-        if(taiKhoan == null) {
+        if (taiKhoan == null) {
             return "gioi-thieu";
         }
         BenhNhan benhNhan = benhNhanRepo.findByTaiKhoan(taiKhoan.getTaiKhoan());
-        model.addAttribute("benhNhan",benhNhan);
+        model.addAttribute("benhNhan", benhNhan);
         return "gioi-thieu";
     }
 
 
-    @GetMapping ("dang-ki")
+    @GetMapping("dang-ki")
     public String viewDangKi() {
         return "dang-ki";
     }
 
-    @GetMapping ("dang-nhap")
+    @GetMapping("dang-nhap")
     public String viewDangNhap() {
         return "dang-nhap";
     }
 
     @ModelAttribute
-    SignUpRequest signUpRequest(){
+    SignUpRequest signUpRequest() {
         return new SignUpRequest();
     }
 
     @ModelAttribute
-    TaiKhoan taiKhoan(){
+    TaiKhoan taiKhoan() {
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(user instanceof CustomUserDetails && ((CustomUserDetails) user).hasRole("BENH_NHAN") ){
+        if (user instanceof CustomUserDetails && ((CustomUserDetails) user).hasRole("BENH_NHAN")) {
             CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             return userDetails.getTaiKhoan();
         }
@@ -112,13 +106,13 @@ public class BenhNhanController {
     @PostMapping("dang-ki")
     @Transactional
     public String dangKi(@ModelAttribute @Valid SignUpRequest signUpRequest,
-                         Errors errors,Model model, RedirectAttributes redirectAttributes) throws ParseException {
+                         Errors errors, Model model, RedirectAttributes redirectAttributes) throws ParseException {
         System.out.println(signUpRequest.toString());
-        if(errors.hasErrors()) {
+        if (errors.hasErrors()) {
             return "dang-ki";
         }
-        if(taiKhoanRepo.findByUsername(signUpRequest.getUsername()) != null) {
-            model.addAttribute("loi","Tài khoản đã tồn tại");
+        if (taiKhoanRepo.findByUsername(signUpRequest.getUsername()) != null) {
+            model.addAttribute("loi", "Tài khoản đã tồn tại");
             return "dang-ki";
         }
         // tao tai khoan cho benh nhan
@@ -144,19 +138,19 @@ public class BenhNhanController {
     @GetMapping("dat-lich")
     @PreAuthorize("hasAuthority('BENH_NHAN')")
     public String datLichKhambenh(Model model, @AuthenticationPrincipal CustomUserDetails taiKhoan) {
-        if(taiKhoan==null || !taiKhoan.hasRole("BENH_NHAN")) {
+        if (taiKhoan == null || !taiKhoan.hasRole("BENH_NHAN")) {
             return "redirect:/dang-nhap";
         }
         BenhNhan benhNhan = benhNhanRepo.findByTaiKhoan(taiKhoan.getTaiKhoan());
         List<ChuyenKhoa> chuyenKhoaList = chuyenKhoaRepo.findAll();
-        model.addAttribute("benhNhan",benhNhan);
-        model.addAttribute("chuyenKhoaList",chuyenKhoaList);
-        Map<Integer,String> khungGioKham = new HashMap<>();
-        khungGioKham.put(1,"Từ 8h30 đến 9h30");
-        khungGioKham.put(2,"Từ 10h00 đến 11h00");
-        khungGioKham.put(3,"Từ 14h00 đến 15h00");
-        khungGioKham.put(4,"Từ 15h30 đến 16h30");
-        model.addAttribute("khungGioKham",khungGioKham);
+        model.addAttribute("benhNhan", benhNhan);
+        model.addAttribute("chuyenKhoaList", chuyenKhoaList);
+        Map<Integer, String> khungGioKham = new HashMap<>();
+        khungGioKham.put(1, "Từ 8h30 đến 9h30");
+        khungGioKham.put(2, "Từ 10h00 đến 11h00");
+        khungGioKham.put(3, "Từ 14h00 đến 15h00");
+        khungGioKham.put(4, "Từ 15h30 đến 16h30");
+        model.addAttribute("khungGioKham", khungGioKham);
 
         return "booking";
     }
@@ -166,17 +160,17 @@ public class BenhNhanController {
                                  @ModelAttribute BookingRequest bookingRequest,
                                  RedirectAttributes redirectAttributes) throws ParseException {
         System.out.println(bookingRequest.toString());
-        if(taiKhoan==null || !taiKhoan.hasRole("BENH_NHAN")) {
+        if (taiKhoan == null || !taiKhoan.hasRole("BENH_NHAN")) {
             return "redirect:/dang-nhap";
         }
 //        BenhNhan benhNhan = benhNhanRepo.findByTaiKhoan(taiKhoan.getTaiKhoan());
-        if(!bookingRequest.isValid()) {
+        if (!bookingRequest.isValid()) {
             redirectAttributes.addFlashAttribute("loi", "Booking Request không hợp lệ");
             return "redirect:/dat-lich";
         }
-        List<LichKham> lichKhamList =  lichKhamRepo.findByNgayKhamAndBacSyIdAndKhungGioKham(
-                format.parse(bookingRequest.getNgayKham()),bookingRequest.getBacSyId(),bookingRequest.getKhungGioKham());
-        if(!lichKhamList.isEmpty()) {
+        List<LichKham> lichKhamList = lichKhamRepo.findByNgayKhamAndBacSyIdAndKhungGioKham(
+                format.parse(bookingRequest.getNgayKham()), bookingRequest.getBacSyId(), bookingRequest.getKhungGioKham());
+        if (!lichKhamList.isEmpty()) {
             redirectAttributes.addFlashAttribute("loi", "Thời gian này đã có người đặt");
             return "redirect:/dat-lich";
         }
@@ -197,20 +191,20 @@ public class BenhNhanController {
         lichKham.setTienKham(lichKham.getBacSy().getTienKham());
 
         lichKhamRepo.save(lichKham);
-        redirectAttributes.addFlashAttribute("ok","Đặt lịch thành công");
+        redirectAttributes.addFlashAttribute("ok", "Đặt lịch thành công");
         return "redirect:/dat-lich";
     }
 
     @GetMapping("huyLichKham/{id}")
-    public String huyLichKham(@AuthenticationPrincipal CustomUserDetails taiKhoan,@PathVariable Integer id,
-                              RedirectAttributes redirectAttributes){
-        if(taiKhoan==null || !taiKhoan.hasRole("BENH_NHAN")) {
+    public String huyLichKham(@AuthenticationPrincipal CustomUserDetails taiKhoan, @PathVariable Integer id,
+                              RedirectAttributes redirectAttributes) {
+        if (taiKhoan == null || !taiKhoan.hasRole("BENH_NHAN")) {
             return "redirect:/dang-nhap";
         }
         LichKham lichKham = lichKhamRepo.getById(id);
         lichKham.setStatus(Status.DA_HUY);
         lichKhamRepo.save(lichKham);
-        redirectAttributes.addFlashAttribute("ok","Hủy lịch khám thành công");
+        redirectAttributes.addFlashAttribute("ok", "Hủy lịch khám thành công");
         return "redirect:/lich-kham-benh?status=2";
     }
 
@@ -221,26 +215,26 @@ public class BenhNhanController {
                                @RequestParam(value = "page", required = true, defaultValue = "1") Integer page,
                                @RequestParam(value = "pageSize", required = true, defaultValue = "10") Integer pageSize,
                                @RequestParam(value = "status", required = false) Integer status) {
-        if(taiKhoan==null || !taiKhoan.hasRole("BENH_NHAN")) {
+        if (taiKhoan == null || !taiKhoan.hasRole("BENH_NHAN")) {
             return "redirect:/dang-nhap";
         }
         BenhNhan benhNhan = benhNhanRepo.findByTaiKhoan(taiKhoan.getTaiKhoan());
         List<LichKham> lichKhamList = null;
-        if(status!=null) {
-            if(status == 0) {
-                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId() ,Status.CHO_XU_LY, PageRequest.of(page-1,pageSize));
+        if (status != null) {
+            if (status == 0) {
+                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId(), Status.CHO_XU_LY, PageRequest.of(page - 1, pageSize));
             }
-            if(status==1){
-                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId() ,Status.DA_XAC_NHAN, PageRequest.of(page-1,pageSize));
+            if (status == 1) {
+                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId(), Status.DA_XAC_NHAN, PageRequest.of(page - 1, pageSize));
             }
-            if(status==2){
-                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId() ,Status.DA_HUY, PageRequest.of(page-1,pageSize));
+            if (status == 2) {
+                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId(), Status.DA_HUY, PageRequest.of(page - 1, pageSize));
             }
-            if(status==3){
-                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId() ,Status.DA_KHAM, PageRequest.of(page-1,pageSize));
+            if (status == 3) {
+                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId(), Status.DA_KHAM, PageRequest.of(page - 1, pageSize));
             }
-        }else {
-            lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhan(benhNhan.getId(), PageRequest.of(page-1,pageSize));
+        } else {
+            lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhan(benhNhan.getId(), PageRequest.of(page - 1, pageSize));
 
         }
 
@@ -251,31 +245,32 @@ public class BenhNhanController {
 
     @GetMapping("profile")
     @PreAuthorize("hasAuthority('BENH_NHAN')")
-    public String viewProfile(Model model,@AuthenticationPrincipal CustomUserDetails taiKhoan){
-        if(taiKhoan==null || !taiKhoan.hasRole("BENH_NHAN")) {
+    public String viewProfile(Model model, @AuthenticationPrincipal CustomUserDetails taiKhoan) {
+        if (taiKhoan == null || !taiKhoan.hasRole("BENH_NHAN")) {
             return "redirect:/dang-nhap";
         }
         BenhNhan benhNhan = benhNhanRepo.findByTaiKhoan(taiKhoan.getTaiKhoan());
         System.out.println(benhNhan);
-        model.addAttribute("benhNhan",benhNhan);
+        model.addAttribute("benhNhan", benhNhan);
         return "profile-benh-nhan";
     }
+
     @PostMapping("profile")
     @PreAuthorize("hasAuthority('BENH_NHAN')")
     @Transactional
     public String updateProfile(@AuthenticationPrincipal CustomUserDetails taiKhoan,
                                 @ModelAttribute(name = "benhNhan") BenhNhanRequest benhNhanRequest,
                                 @RequestParam("image") MultipartFile file, RedirectAttributes redirectAttributes) throws IOException, ParseException {
-        if(taiKhoan==null || !taiKhoan.hasRole("BENH_NHAN")) {
+        if (taiKhoan == null || !taiKhoan.hasRole("BENH_NHAN")) {
             return "redirect:/dang-nhap";
         }
 
         BenhNhan benhNhan = benhNhanRepo.findByTaiKhoan(taiKhoan.getTaiKhoan());
 
-        if(file.isEmpty()) {
-            benhNhanRepo.updateProfileBenhNhanKoUploadFile(benhNhanRequest.getDiaChi(),benhNhanRequest.getHoTen(),
-                    format.parse(benhNhanRequest.getNgaySinh()),benhNhanRequest.getSdt(),benhNhanRequest.getEmail(),benhNhan.getId());
-            redirectAttributes.addFlashAttribute("ok","Update thành công");
+        if (file.isEmpty()) {
+            benhNhanRepo.updateProfileBenhNhanKoUploadFile(benhNhanRequest.getDiaChi(), benhNhanRequest.getHoTen(),
+                    format.parse(benhNhanRequest.getNgaySinh()), benhNhanRequest.getSdt(), benhNhanRequest.getEmail(), benhNhan.getId());
+            redirectAttributes.addFlashAttribute("ok", "Update thành công");
 
             return "redirect:/profile";
         }
@@ -283,54 +278,56 @@ public class BenhNhanController {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         String uploadDir = "benhnhan-photos/" + benhNhan.getId();
         System.out.println(benhNhanRequest.toString());
-        benhNhanRepo.updateProfileBenhNhan(benhNhanRequest.getDiaChi(),benhNhanRequest.getHoTen(),
-                format.parse(benhNhanRequest.getNgaySinh()),benhNhanRequest.getSdt(),benhNhanRequest.getEmail(),
-                fileName,benhNhan.getId());
+        benhNhanRepo.updateProfileBenhNhan(benhNhanRequest.getDiaChi(), benhNhanRequest.getHoTen(),
+                format.parse(benhNhanRequest.getNgaySinh()), benhNhanRequest.getSdt(), benhNhanRequest.getEmail(),
+                fileName, benhNhan.getId());
 
         FileUploadUtil.saveFile(uploadDir, fileName, file);
 
-        redirectAttributes.addFlashAttribute("ok","Update thành công");
+        redirectAttributes.addFlashAttribute("ok", "Update thành công");
 
         return "redirect:/profile";
     }
+
     @GetMapping("/doi-mat-khau")
     @PreAuthorize("hasAuthority('BENH_NHAN')")
-    public String viewDoiMatKhau(Model model,@AuthenticationPrincipal CustomUserDetails taiKhoan){
-        if(taiKhoan==null || !taiKhoan.hasRole("BENH_NHAN")) {
+    public String viewDoiMatKhau(Model model, @AuthenticationPrincipal CustomUserDetails taiKhoan) {
+        if (taiKhoan == null || !taiKhoan.hasRole("BENH_NHAN")) {
             return "redirect:/dang-nhap";
         }
         BenhNhan benhNhan = benhNhanRepo.findByTaiKhoan(taiKhoan.getTaiKhoan());
 
-        model.addAttribute("benhNhan",benhNhan);
+        model.addAttribute("benhNhan", benhNhan);
         model.addAttribute("doiMatKhauRequest", new DoiMatKhauRequest());
         return "doimatkhau-benh-nhan";
     }
+
     @PostMapping("/doi-mat-khau")
     @PreAuthorize("hasAuthority('BENH_NHAN')")
     @Transactional
     public String updateMatKhau(@ModelAttribute @Valid DoiMatKhauRequest doiMatKhauRequest,
                                 BindingResult bindingResult,
-                                Model model,@AuthenticationPrincipal CustomUserDetails taiKhoan,
-                                RedirectAttributes redirectAttributes,Errors errors){
+                                Model model, @AuthenticationPrincipal CustomUserDetails taiKhoan,
+                                RedirectAttributes redirectAttributes, Errors errors) {
 
         System.out.println(doiMatKhauRequest.toString());
-        if(taiKhoan==null || !taiKhoan.hasRole("BENH_NHAN")) {
+        if (taiKhoan == null || !taiKhoan.hasRole("BENH_NHAN")) {
             return "redirect:/dang-nhap";
         }
 
         //validate đầu vào
-        if(errors.hasErrors()) {
+        if (errors.hasErrors()) {
             return "doimatkhau-benh-nhan";
         }
 
         // check mật khẩu hiện tại
-        if(!doiMatKhauRequest.getMatKhauHienTai().equals(taiKhoan.getPassword())) {
-            redirectAttributes.addFlashAttribute("loiMatKhau1","Mật khẩu hiện tại sai mật khẩu cũ");
+        if (!doiMatKhauRequest.getMatKhauHienTai().equals(taiKhoan.getPassword())) {
+            redirectAttributes.addFlashAttribute("loiMatKhau1", "Mật khẩu hiện tại sai mật khẩu cũ");
             return "redirect:/doi-mat-khau";
         }
         // update mật khẩu mới
-        taiKhoanRepo.updateMatKhau(doiMatKhauRequest.getMatKhauMoi(),taiKhoan.getTaiKhoan().getUsername());
-        model.addAttribute("ok","Update mật khẩu thành công");
+        taiKhoanRepo.updateMatKhau(doiMatKhauRequest.getMatKhauMoi(), taiKhoan.getTaiKhoan().getUsername());
+        model.addAttribute("ok", "Update mật khẩu thành công");
         return "doimatkhau-benh-nhan";
     }
 
@@ -354,7 +351,7 @@ public class BenhNhanController {
         vnp_Params.put("vnp_Version", vnp_Version);
         vnp_Params.put("vnp_Command", vnp_Command);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-        vnp_Params.put("vnp_Amount", String.valueOf(tienKham*100));
+        vnp_Params.put("vnp_Amount", String.valueOf(tienKham * 100));
         vnp_Params.put("vnp_CurrCode", "VND");
 //        vnp_Params.put("idLichKham", String.valueOf(idLichKham));
         vnp_Params.put("vnp_BankCode", paymentMethod);
@@ -369,7 +366,7 @@ public class BenhNhanController {
         } else {
             vnp_Params.put("vnp_Locale", "vn");
         }
-        vnp_Params.put("vnp_ReturnUrl", VNPayConfig.vnp_Returnurl+"?idLichKham=" + idLichKham);
+        vnp_Params.put("vnp_ReturnUrl", VNPayConfig.vnp_Returnurl + "?idLichKham=" + idLichKham);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
 
@@ -411,31 +408,32 @@ public class BenhNhanController {
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
         String paymentUrl = VNPayConfig.vnp_PayUrl + "?" + queryUrl;
 
-        return "redirect:"+paymentUrl;
+        return "redirect:" + paymentUrl;
 
     }
+
     @GetMapping("/thanh-toan")
     @PreAuthorize("hasAuthority('BENH_NHAN')")
-    public String thanhToan(Model model,@AuthenticationPrincipal CustomUserDetails taiKhoan,
+    public String thanhToan(Model model, @AuthenticationPrincipal CustomUserDetails taiKhoan,
                             @RequestParam("vnp_ResponseCode") String responseCode,
-                            @RequestParam("idLichKham") Integer idLichKham){
-        if(taiKhoan==null || !taiKhoan.hasRole("BENH_NHAN")) {
+                            @RequestParam("idLichKham") Integer idLichKham) {
+        if (taiKhoan == null || !taiKhoan.hasRole("BENH_NHAN")) {
             return "redirect:/dang-nhap";
         }
         BenhNhan benhNhan = benhNhanRepo.findByTaiKhoan(taiKhoan.getTaiKhoan());
-        if(responseCode.equals("00")) {
+        if (responseCode.equals("00")) {
             //Luu thong tin dang ký thanh cong
             LichKham lichKham = lichKhamRepo.findById(idLichKham).get();
             lichKham.setPaid(true);
             lichKhamRepo.save(lichKham);
-            model.addAttribute("msg","Thanh toán thành công cho lịch khám " + idLichKham);
+            model.addAttribute("msg", "Thanh toán thành công cho lịch khám " + idLichKham);
             model.addAttribute("lichKham", lichKham);
             return "thanhtoan";
-        }else {
+        } else {
             //xử lý thông báo thanh toán thất bại
             LichKham lichKham = lichKhamRepo.findById(idLichKham).get();
             lichKhamRepo.save(lichKham);
-            model.addAttribute("msg","Thanh toán thất bại cho lịch khám " + idLichKham);
+            model.addAttribute("msg", "Thanh toán thất bại cho lịch khám " + idLichKham);
             model.addAttribute("lichKham", lichKham);
             return "thanhtoan";
         }
