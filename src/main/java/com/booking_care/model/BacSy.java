@@ -35,22 +35,6 @@ public class BacSy {
         return "/bacsy-photos/" + id + "/" + photo;
     }
 
-    public BacSy(String hoTen, Date ngaySinh, String sdt, String email, String chucVu, Integer tienKham, ChuyenKhoa chuyenKhoa, String noiKham, String photo, String chungChi, String kinhNghiem, String linhVucChuyenSau, TaiKhoan taiKhoan) {
-        this.hoTen = hoTen;
-        this.ngaySinh = ngaySinh;
-        this.sdt = sdt;
-        this.email = email;
-        this.chucVu = chucVu;
-        this.tienKham = tienKham;
-        this.chuyenKhoa = chuyenKhoa;
-        this.noiKham = noiKham;
-        this.photo = photo;
-        this.chungChi = chungChi;
-        this.kinhNghiem = kinhNghiem;
-        this.linhVucChuyenSau = linhVucChuyenSau;
-        this.taiKhoan = taiKhoan;
-    }
-
     public BacSy() {
     }
     public BacSy(BacSyResgisterRequest request) {

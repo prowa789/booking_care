@@ -17,6 +17,7 @@ import com.booking_care.utils.FileUploadUtil;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -221,17 +222,18 @@ public class BenhNhanController {
         BenhNhan benhNhan = benhNhanRepo.findByTaiKhoan(taiKhoan.getTaiKhoan());
         List<LichKham> lichKhamList = null;
         if (status != null) {
+           Sort sort = Sort.by(Sort.Direction.ASC, "thoiGianDk");
             if (status == 0) {
-                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId(), Status.CHO_XU_LY, PageRequest.of(page - 1, pageSize));
+                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId(), Status.CHO_XU_LY, PageRequest.of(page - 1, pageSize,sort));
             }
             if (status == 1) {
-                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId(), Status.DA_XAC_NHAN, PageRequest.of(page - 1, pageSize));
+                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId(), Status.DA_XAC_NHAN, PageRequest.of(page - 1, pageSize,sort));
             }
             if (status == 2) {
-                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId(), Status.DA_HUY, PageRequest.of(page - 1, pageSize));
+                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId(), Status.DA_HUY, PageRequest.of(page - 1, pageSize,sort));
             }
             if (status == 3) {
-                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId(), Status.DA_KHAM, PageRequest.of(page - 1, pageSize));
+                lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhanByStatus(benhNhan.getId(), Status.DA_KHAM, PageRequest.of(page - 1, pageSize,sort));
             }
         } else {
             lichKhamList = lichKhamRepo.getAllLichKhamOfBenhNhan(benhNhan.getId(), PageRequest.of(page - 1, pageSize));
@@ -366,7 +368,7 @@ public class BenhNhanController {
         } else {
             vnp_Params.put("vnp_Locale", "vn");
         }
-        vnp_Params.put("vnp_ReturnUrl", VNPayConfig.vnp_Returnurl + "?idLichKham=" + idLichKham);
+        vnp_Params.put("vnp_ReturnUrl", VNPayConfig.vnp_ReturnUrl + "?idLichKham=" + idLichKham);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
 

@@ -231,7 +231,7 @@ public class BacSyController {
                 bacSyRepo.updateThongTinBacSy(format.parse(bacSyRequest.getNgaySinh()), bacSyRequest.getHoTen(),
                         bacSyRequest.getChucVu(), bacSyRequest.getChuyenKhoaId(),
                         bacSyRequest.getSdt(), bacSyRequest.getEmail(), bacSyRequest.getChungChi(), bacSyRequest.getKinhNghiem(),
-                        bacSyRequest.getLinhVucChuyenSau(),bacSyRequest.getTienKham(),bacSyRequest.getNoiKham(), bacSyRequest.getId());
+                        bacSyRequest.getLinhVucChuyenSau(),bacSyRequest.getTienKham(),bacSyRequest.getNoiKham(), bacSy.getId());
                 redirectAttributes.addFlashAttribute("ok", "Update thành công");
                 return "redirect:/bacsy/profile";
             }
@@ -240,7 +240,7 @@ public class BacSyController {
             bacSyRepo.updateThongTinBacSyAndUploadFile(format.parse(bacSyRequest.getNgaySinh()), bacSyRequest.getHoTen(),
                     bacSyRequest.getChucVu(), bacSyRequest.getChuyenKhoaId(),
                     bacSyRequest.getSdt(), bacSyRequest.getEmail(), fileName, bacSyRequest.getChungChi(),
-                    bacSyRequest.getKinhNghiem(), bacSyRequest.getLinhVucChuyenSau(),bacSyRequest.getTienKham(),bacSyRequest.getNoiKham(), bacSyRequest.getId());
+                    bacSyRequest.getKinhNghiem(), bacSyRequest.getLinhVucChuyenSau(),bacSyRequest.getTienKham(),bacSyRequest.getNoiKham(), bacSy.getId());
             String uploadDir = "bacsy-photos/" + bacSy.getId();
 
             FileUploadUtil.saveFile(uploadDir, fileName, file);

@@ -161,8 +161,8 @@ public class AdminController {
             String username = Utils.createUserName(bacSyRequest.getHoTen());
             String defaultPw = "123456";
 
-            if (taiKhoanRepo.findByUsername(username) != null) {
-               long count = taiKhoanRepo.countByUsername(username);
+            long count = taiKhoanRepo.countByUsernameStartingWith(username);
+            if (count > 0) {
                username += count;
             }
             // tao tai khoan cho benh nhan
@@ -178,6 +178,7 @@ public class AdminController {
             BacSy bacSy = new BacSy(bacSyRequest);
             bacSy.setChuyenKhoa(ck);
             bacSy.setNgaySinh(format.parse(bacSyRequest.getNgaySinh()));
+            bacSy.setTaiKhoan(taiKhoan);
             // luu thong tin bac sy
             bacSy = bacSyRepo.save(bacSy);
             redirectAttributes.addFlashAttribute("ok", "Thêm mới thành công !");

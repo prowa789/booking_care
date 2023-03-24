@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- jQuery library -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <!-- In the <head> -->
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- custom css file link  -->
+    <link rel="stylesheet" th:href="@{css/style.css}">
+    <title>Trang chủ</title>
+</head>
+    <style>
+        .slider {
+            display: flex;
+        }
+
+        .slider > * {
+            width: 100%;
+            flex: 0 0 auto;
+        }
+    </style>
+<body>
+<div th:replace="fragments/fragment :: loginBar"></div>
+
+<nav th:replace="fragments/fragment :: menu"></nav>
+
+
+<section class="home" id="home">
+
+<!--    <div class="image">-->
+<!--        <img src="image/home-img.svg" alt="">-->
+<!--    </div>-->
+
+<!--    <div class="content">-->
+<!--        <h3 style="font-size: 40px">Sức khỏe toàn diện, trọn gói yêu thương</h3>-->
+<!--        <p>Booking care website là giải pháp đặt lịch khám bệnh, chăm sóc sức khỏe trực tuyến cho cả gia đình.-->
+<!--            Người dùng chủ động trong việc khám chữa bệnh, được lựa chọn dịch vụ, chuyên khoa,-->
+<!--            bác sĩ tại các bệnh viện và phòng khám hàng đầu Việt Nam-->
+<!--            như Bệnh viện Đại học Y Dược TP.HCM, Bệnh viện Chợ Rẫy, Bệnh viện Nhi Đồng Thành Phố.</p>-->
+<!--        <a href="#" class="btn"> contact us <span class="fas fa-chevron-right"></span> </a>-->
+<!--    </div>-->
+    <div class="container" style="display: flex;justify-content: center";>
+        <div class="row" style="width: 100%;margin: 0;padding: 0">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img class="d-block w-100" th:src="@{image/slide1.jpg}" alt="First slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" th:src="@{image/slide2.jpg}" alt="Second slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" th:src="@{image/slide3.jpg}" alt="Third slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" th:src="@{image/slide4.jpg}" alt="Third slide">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <i class="fa fa-chevron-left" style="color:black;font-size: 50px" aria-hidden="true"></i>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <i class="fa fa-chevron-right"style="color:black;font-size: 50px" aria-hidden="true"></i>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid text-center" style="background-color: #e9e9e9;padding:20px">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="title2" style="font-size: 30px;color: #0061a9;padding-top: 40px">Dich vụ y tế</h2>
+                <div class="row">
+                    <div class="col-3 d-none d-sm-block"></div>
+                    <div class="col-md-6 col-12">
+                        <p class="mota2" style="font-size: 20px;padding-bottom: 20px">
+                            Tại Bệnh viện Việt Pháp Hà Nội, quý khách sẽ được trải nghiệm các dịch vụ chăm sóc sức khỏe chất lượng cao đạt tiêu chuẩn quốc tế.
+                        </p>
+                    </div>
+                    <div class="col-3 d-none d-sm-block"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <ul class="slider2 col-12" style="display: flex;justify-content: center;list-style: none">
+                <li class="row">
+                    <div class="card col-md-4 col-12">
+                        <img class="card-img-top" src="https://www.hfh.com.vn/sites/default/files/styles/ser555x341/public/Services/ICU_service_02.jpg?itok=SeDzrw5W" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 25px;margin-bottom: 25px;color: #0061a9 ">Khoa gây mê hồi sức</h5>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p class="mota2" style="font-size: 20px;text-align: left">
+                                        Gây mê là chuyên khoa giúp cho người bệnh mất đi cảm giác đau trước khi tiến hành phẫu thuật, chăm sóc người bệnh trong phẫu thuật, đánh thức và đảm bảo người bệnh cảm thấy khỏe và không đau sau phẫu thuật.                                     </p>
+                                </div>
+
+                            </div>
+                            <a href="#" class="btn btn-primary">Xem chi tiết</a>
+                        </div>
+                    </div>
+                    <div class="card col-md-4 col-12">
+                        <img class="card-img-top" src="https://www.hfh.com.vn/sites/default/files/styles/ser555x341/public/Services/ECG-stress-test_0.jpg?itok=oVC4CGnH" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 25px;margin-bottom: 25px;color: #0061a9 ">Khoa gây mê hồi sức</h5>
+                            <div class="row">
+
+                                <div class="col-12">
+                                    <p class="mota2" style="font-size: 20px;text-align: left">
+                                        Khoa Tim mạch của Bệnh viện Việt Pháp Hà Nội bao gồm đội ngũ bác sỹ tim mạch nội khoa và bác sĩ can thiệp tim mạch người Pháp và Việt nam với sự phối hợp cùng các bác sĩ thuộc Viện Tim mạch quốc gia, Bệnh viện Tim Hà Nội                                </div>
+
+                            </div>
+                            <a href="#" class="btn btn-primary">Xem chi tiết</a>
+                        </div>
+                    </div>
+                    <div class="card col-md-4 col-12">
+                        <img class="card-img-top" src="https://www.hfh.com.vn/sites/default/files/styles/ser555x341/public/page/Visceral%20Surgery.jpg?itok=8k27fbWj" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 25px;margin-bottom: 25px;color: #0061a9 ">Phẫu Thuật Ổ Bụng
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="mota2" style="font-size: 20px;text-align: left">
+                                        Bệnh lý đường tiêu hóa rất phổ biến ở Việt Nam và Khoa Phẫu thuật ổ bụng phối hợp với chuyên khoa Tiêu hóa – Gan mật mang lại dịch vụ khám và điều trị nội khoa cũng như ngoại khoa tối ưu nhất.                                </div>
+                            </div>
+                            <a href="#" class="btn btn-primary">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+
+
+
+</section>
+
+<section th:replace="fragments/fragment :: footer"></section>
+
+<script th:src="@{js/script.js}"></script>
+</body>
+
+</html>

@@ -16,4 +16,8 @@ public interface TaiKhoanRepository extends CrudRepository<TaiKhoan,Integer> {
     @Query("update TaiKhoan t set t.password = ?1 where t.username = ?2")
     void updateMatKhau(String password, String username);
     long countByUsername(String username);
+//    @Query(value = "SELECT count(username) FROM tai_khoan where username like ?1%;", nativeQuery = true)
+    long countByUsernameStartingWith(String username);
+//    @Query(value = "SELECT count(username) FROM tai_khoan where username like ?1%;", nativeQuery = true)
+//    TaiKhoan findByUsernameStartsWith(String username);
 }

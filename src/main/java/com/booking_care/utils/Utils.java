@@ -9,32 +9,37 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 public class Utils {
 
-    public static String dateToString(Date date){
+    public static String dateToString(Date date) {
         return null;
     }
-    public static Date stringToDate(String dateStr){
+
+    public static Date stringToDate(String dateStr) {
         try {
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
             return format.parse(dateStr);
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("lỗi parse date");
         }
         return null;
     }
-    public static Date stringToDate2(String dateStr){
+
+    public static Date stringToDate2(String dateStr) {
         try {
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             return format.parse(dateStr);
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("lỗi parse date");
         }
         return null;
     }
+
     public static String encode(String key, String data) {
         try {
 
@@ -56,7 +61,9 @@ public class Utils {
     public static String createUserName(String username) {
         String output = "";
 
-        String[] splitName = username.toLowerCase().split(" ");
+        username = removeAccent(username.toLowerCase());
+
+        String[] splitName = username.split(" ");
 
         output = splitName[splitName.length - 1] + ".";
 
@@ -65,5 +72,12 @@ public class Utils {
         }
 
         return output;
+    }
+
+    public static String removeAccent(String s) { String temp = Normalizer.normalize(s, Normalizer.Form.NFD); Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+"); temp = pattern.matcher(temp).replaceAll("");
+        return temp.replaceAll("đ", "d"); }
+
+    public static void main(String[] args) {
+        System.out.println(createUserName("Đặng Duy Tuấn"));
     }
 }

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- jQuery library -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- custom css file link  -->
+    <link rel="stylesheet" th:href="@{css/style.css}">
+    <title>Danh sách lịch khám</title>
+</head>
+<style>
+    input {
+        font-size: 16px !important;
+    }
+
+    nav.navecation ul li {
+        list-style: none;
+        float: left;
+        padding-right: 20px;
+    }
+
+    nav.navecation ul li a {
+        text-decoration: none;
+        color: #222;
+        background-color: #ccc;
+        padding: 4px 5px;
+    }
+
+    nav.navecation .active {
+        background-color: #A7727D;
+        color: #fff;
+
+    }
+
+
+</style>
+
+<body>
+
+<div th:replace="fragments/fragment :: loginBar"></div>
+
+<nav th:replace="fragments/fragment :: menu"></nav>
+
+<section class="blogs" style="font-size: 16px;">
+    <h1 class="heading"><span>Danh sách lịch khám</span></h1>
+    <p class="alert alert-danger validationError" th:if="${ok}" th:text="${ok}" role="alert"></p>
+
+    <nav class="navecation" style="margin-bottom: 60px">
+        <ul id="navi">
+            <li><a class="menu status0" href="/lich-kham-benh?status=0">Chưa xử lý</a></li>
+            <li><a class="menu status1" href="/lich-kham-benh?status=1">Đã xác nhận</a></li>
+            <li><a class="menu status2" href="/lich-kham-benh?status=2">Đã hủy</a></li>
+            <li><a class="menu status3" href="/lich-kham-benh?status=3">Đã khám</a></li>
+        </ul>
+    </nav>
+    <p class="alert alert-danger" th:if="${lichKhamList.size() == 0}">Danh sách trống</p>
+    <div class="container" th:each="lichKham : ${lichKhamList}">
+        <form th:action="@{/thanhToan}" method="post">
+        <h3 style="font-size: 25px!important;display: inline-block"
+            th:text="'Lịch khám bệnh số ' + ${lichKham.id}"></h3>
+        <table class="table table-striped" style="font-size: 16px;">
+            <thead>
+            <tr>
+                <th scope="col">Id lịch khám</th>
+                <td th:text="${lichKham.id}"></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="col">Bác sỹ khám</th>
+                <td th:text="${lichKham.getBacSy().getHoTen()}"></td>
+            </tr>
+            <tr>
+                <th scope="col">Chuyên khoa</th>
+                <td th:text="${lichKham.getBacSy().getChuyenKhoa().ten}">Mark</td>
+            </tr>
+            <tr>
+                <th scope="col">Ngày khám</th>
+                <td th:text="${#dates.format(lichKham.ngayKham, 'dd/MM/yyyy')} ">Mark</td>
+            </tr>
+            <tr>
+                <th scope="col">Khung giờ khám</th>
+                <td th:if="${lichKham.khungGioKham==1}">Từ 8h30 đến 9h30</td>
+                <td th:if="${lichKham.khungGioKham==2}">Từ 10h00 đến 11h00</td>
+                <td th:if="${lichKham.khungGioKham==3}">Từ 14h00 đến 15h00</td>
+                <td th:if="${lichKham.khungGioKham==4}">Từ 15h30 đến 16h30</td>
+
+            </tr>
+            <tr>
+                <th scope="col">Thời gian đăng kí</th>
+                <td th:text="${#dates.format(lichKham.thoiGianDk, 'dd/MM/yyyy HH:mm')}">Mark</td>
+            </tr>
+            <tr>
+                <th scope="col">Nơi khám</th>
+                <td th:text="${lichKham.bacSy.noiKham + ', Bệnh viện Việt Đức (40 Tràng Thi, Hoàn Kiếm, Hà Nội)'}">
+                    Mark
+                </td>
+            </tr>
+            <tr>
+                <th scope="col">Giá tiền khám</th>
+                <td th:text="${lichKham.tienKham}" class="tienKham1">Mark</td>
+                </td>
+            </tr>
+            <tr>
+                <th scope="col">Trạng thái</th>
+                <td th:text="${lichKham.status.getValue()}">Mark</td>
+            </tr>
+            <tr>
+                <th scope="col">Trạng thái thanh toán</th>
+                <td th:if="${lichKham.isPaid()}">Đã thanh toán</td>
+                <td th:unless="${lichKham.isPaid()}">Chưa thanh toán</td>
+            </tr>
+            <tr th:unless="${lichKham.isPaid()||lichKham.status.getValue()=='Đã hủy'}">
+                <th scope="col">Action</th>
+                <td>
+                    <div class="row">
+                        <div class="col-md-2" th:if="${lichKham.status.getValue()=='Chờ xử lý'}">
+                            <a th:href="'/huyLichKham/' + ${lichKham.id}" class="btn btn-primary" style="color: white;  border: none;
+    border-radius: .5rem;
+    box-shadow: none;
+
+    background: red;">Hủy lịch khám</a>
+                        </div>
+                        <div class="col-md-3" style="padding:12px" >
+                            <span>Chọn hình thức thanh toán: </span>
+                        </div>
+                        <div class="col-md-2" style="padding:12px">
+                            <input style="display:none;" th:value="${lichKham.tienKham}" name="tienKham">
+                            <input style="display:none;" th:value="${lichKham.id}" name="idLichKham">
+                            <select name="payment_method">
+                                <option value="VNPAYQR">VNPAY QR</option>
+                                <option value="VNBANK">Thẻ ATM nội địa</option>
+                                <option value="INTCARD">Thẻ quốc tế</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="submit" class="btn" value="Thanh toán" >
+                        </div>
+                    </div>
+
+
+
+
+                </td>
+            </tr>
+<!--            <tr th:unless="${lichKham.status.getValue()=='Đã xác nhận' || lichKham.isPaid()}">-->
+<!--                <th scope="col">Action</th>-->
+<!--                <td>-->
+<!--                        <p>Chọn hình thức thanh toán: </p>-->
+<!--                        <input style="display:none;" th:value="${lichKham.tienKham}" name="tienKham">-->
+<!--                        <input style="display:none;" th:value="${lichKham.id}" name="idLichKham">-->
+<!--                        <select name="payment_method" style="width: 65%;">-->
+<!--&lt;!&ndash;                            <option value="MOMOQR">Ví Momo</option>&ndash;&gt;-->
+<!--                            <option value="VNPAYQR">VNPAY QR</option>-->
+<!--                            <option value="VNBANK">Thẻ ATM nội địa</option>-->
+<!--                            <option value="INTCARD">Thẻ quốc tế</option>-->
+<!--                        </select>-->
+<!--                        <input type="submit" class="btn" value="Thanh toán" >-->
+<!--                </input>-->
+<!--            </tr>-->
+            </tbody>
+        </table>
+        </form>
+    </div>
+</section>
+
+<section th:replace="fragments/fragment :: footer"></section>
+
+
+<script th:src="@{js/script.js}"></script>
+
+<script>
+    $(document).ready(function () {
+        var pageURL = $(location).attr("pathname") + $(location).attr("search");
+        console.log(pageURL)
+        if (pageURL === "/lich-kham-benh?status=0") {
+            $('li a').removeClass("active");
+            $('.status0').addClass("active");
+        } else if (pageURL === "/lich-kham-benh?status=1") {
+            $('li a').removeClass("active");
+            $('.status1').addClass("active");
+        }
+        if (pageURL === "/lich-kham-benh?status=2") {
+            $('li a').removeClass("active");
+            $('.status2').addClass("active");
+        } else if (pageURL === "/lich-kham-benh?status=3") {
+            $('li a').removeClass("active");
+            $('.status3').addClass("active");
+        }
+        $('.tienKham1').each(function (index, value) {
+            let x =  Number($(this).html())
+            x = x.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})
+            console.log(x)
+            $(this).html(x)
+        });
+
+    });
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- font awesome cdn link  -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- jQuery library -->
+  <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
+  <!-- Popper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- custom css file link  -->
+  <link rel="stylesheet" th:href="@{css/style.css}">
+  <title>Đặt lịch</title>
+</head>
+
+<body>
+
+<div th:replace="fragments/fragment :: loginBar"></div>
+
+<nav th:replace="fragments/fragment :: menu"></nav>
+
+<section class="book" id="book">
+
+  <h1 class="heading"> <span>Đặt</span> lịch </h1>
+  <p class="alert alert-danger validationError" th:if="${ok}" th:text="${ok}" role="alert"></p>
+  <p class="alert alert-danger validationError" th:if="${loi}" th:text="${loi}" role="alert"></p>
+  <div class="row">
+
+    <div class="image">
+      <img src="image/book-img.svg" alt="">
+    </div>
+    <form th:action="@{/dat-lich}" method="post" style="text-align: left" th:object="${bookingRequest}">
+      <h3>Form đặt lịch khám bệnh</h3>
+
+      <select class="form-select box chuyenkhoa"  name="chuyenKhoaId" style="font-size: 16px">
+        <option selected value="0">Chọn chuyên khoa</option>
+
+        <option th:each="chuyenKhoa : ${chuyenKhoaList}" th:value="${chuyenKhoa.id}" th:text="${chuyenKhoa.ten}" >One</option>
+      </select>
+      <select name="bacSyId" class="form-select box bacsy" style="font-size: 16px">
+        <option selected value="0">Chọn bác sỹ</option>
+      </select>
+
+      <label class="form-label" style="font-size: 16px;">Giá tiền khám</label>
+      <input name="tienKham" type="text" class="box" id="tienKham1" disabled >
+
+      <label class="form-label" style="font-size: 16px;">Ngày khám</label>
+      <input type="date" class="box" name="ngayKham">
+      <label class="form-label" style="font-size: 16px;">Khung giờ đến khám</label>
+      <select class="form-select box"  name="khungGioKham" style="font-size: 16px">
+        <option selected value="0">Chọn khung giờ khám</option>
+        <option th:each="element : ${khungGioKham}" th:value="${element.getKey()}" th:text="${element.getValue()}" >One</option>
+      </select>
+      <label class="form-label" style="font-size: 16px">Mô tả triệu chứng</label>
+      <textarea class="form-control box" placeholder="Mô tả triệu chứng" name="moTaTrieuChung" rows="4"></textarea>
+      <input type="submit" value="Đặt ngay" class="btn">
+    </form>
+
+  </div>
+
+</section>
+
+
+<section th:replace="fragments/fragment :: footer"></section>
+
+<script>
+  $('.chuyenkhoa').on('change', function() {
+    let id = $(this).find(":selected").val()
+    var baseUrl = "http://103.175.147.6:8085/"
+    if(!isNumeric(id)) {
+      alert("Chưa chọn chuyên khoa");
+      return;
+    }
+    console.log("id chuyên khoa nhận được: " + id)
+    console.log("call api to get data")
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: baseUrl + "getAllBacSy/chuyenKhoa/" + id,
+      success: function(data){
+        console.log(data)
+        if(data.length==0) {
+          alert("Không có bác sĩ nào ở chuyên khoa này")
+        }
+        $('.bacsy').empty()
+        $('.bacsy').append(`<option selected value="0">Chọn bác sỹ</option>`)
+        data.map(item =>{
+            let temp = `<option value="${item.id}">${item.hoTen} - Chuyên khoa: ${item.chuyenKhoa.ten}</option>`;
+            $('.bacsy').append(temp);
+        })
+
+      },
+      error: function(request, status, error) {
+        alert("Lỗi khi call api to get bác sỹ");
+      }
+    });
+
+    $('.bacsy').on('change', function() {
+      console.log("ádasdsadasd")
+      id = $('.bacsy').find(":selected").val()
+      if(id == 0 ){
+        return;
+      }
+      console.log('id bac sy ' + id)
+      $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: baseUrl + "api/bacsy/" + id,
+        success: function(data){
+          console.log(data.tienKham)
+          $('#tienKham1').val(data.tienKham.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}))
+        },
+        error: function(request, status, error) {
+          alert("Lỗi khi call api to get bác sỹ");
+        }
+      });
+    });
+  });
+
+  function isNumeric(str) {
+    if (typeof str != "string") return false // we only process strings!
+    return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+            !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+  }
+</script>
+
+<script th:src="@{js/script.js}"></script>
+
+
+</section>
+
+
+</body>
+
+</html>
